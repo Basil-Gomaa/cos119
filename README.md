@@ -24,3 +24,11 @@ During Week 1, the core foundation of the project was established, completing bo
 *   **Version Control:**
     *   Completed the Version Control research document (`docs/BasilMohamed-version-control.md`).
     *   Learned to stage and commit code sequentially using Git.
+
+### Week 2 Progress
+
+During Week 2, the application's structure and robustness were improved for Milestone 2:
+
+*   **Project Relocation**: Relocated the Visual Studio solution (`.slnx`) and project files (`.vcxproj`, `.vcxproj.filters`, `.vcxproj.user`) inside the `dev/` directory to conform with the course structure requirements.
+*   **Input Validation**: Implemented robust input validation in the menu loop (`App::run()`) to handle invalid non-numeric inputs (like text or symbols) cleanly. The application now displays an error message, resets the stream, discards the bad input, and re-prompts the user instead of entering an infinite loop. 
+

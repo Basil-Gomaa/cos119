@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="MovieFetcher/MovieFetcher.vcxproj" />
+  <Project Path="MovieFetcher/MovieFetcher.vcxproj" Id="94ff2267-4c8a-45ff-b280-9a2f0ac6013d" />
 </Solution>

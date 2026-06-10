@@ -19,18 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\dev\.gitkeep" />
+    <None Include="..\..\.gitkeep" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\dev\APIClient.cpp" />
-    <ClCompile Include="..\..\dev\App.cpp" />
-    <ClCompile Include="..\..\dev\main.cpp" />
-    <ClCompile Include="..\..\dev\Movie.cpp" />
+    <ClCompile Include="..\..\APIClient.cpp" />
+    <ClCompile Include="..\..\App.cpp" />
+    <ClCompile Include="..\..\main.cpp" />
+    <ClCompile Include="..\..\Movie.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\dev\APIClient.h" />
-    <ClInclude Include="..\..\dev\App.h" />
-    <ClInclude Include="..\..\dev\Movie.h" />
+    <ClInclude Include="..\..\APIClient.h" />
+    <ClInclude Include="..\..\App.h" />
+    <ClInclude Include="..\..\Movie.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

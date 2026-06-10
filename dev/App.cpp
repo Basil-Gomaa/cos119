@@ -18,8 +18,17 @@ void App::run() {
         std::cout << "4. Exit\n";
         std::cout << "Enter your choice: ";
         
-        std::cin >> choice;
-        std::cin.ignore(); // Clear newline from buffer
+        if (!(std::cin >> choice)) {
+            if (std::cin.eof()) {
+                std::cout << "\nDetected end-of-file. Exiting.\n";
+                break;
+            }
+            std::cout << "Invalid choice. Please enter a valid menu number (1-4).\n";
+            std::cin.clear(); // Clear the error state
+            std::cin.ignore(10000, '\n'); // Clear the rest of the line
+            continue; // Re-prompt
+        }
+        std::cin.ignore(10000, '\n'); // Clear newline and any trailing garbage from buffer
 
         switch (choice) {
             case 1:

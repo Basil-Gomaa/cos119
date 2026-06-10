@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -15,30 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\dev\.gitkeep" />
+    <None Include="..\..\.gitkeep" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\dev\APIClient.cpp">
+    <ClCompile Include="..\..\APIClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dev\App.cpp">
+    <ClCompile Include="..\..\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dev\main.cpp">
+    <ClCompile Include="..\..\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dev\Movie.cpp">
+    <ClCompile Include="..\..\Movie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\dev\APIClient.h">
+    <ClInclude Include="..\..\APIClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\dev\App.h">
+    <ClInclude Include="..\..\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\dev\Movie.h">
+    <ClInclude Include="..\..\Movie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
