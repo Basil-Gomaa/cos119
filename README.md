@@ -25,7 +25,6 @@ During Week 1, the core foundation of the project was established, completing bo
     *   Completed the Version Control research document (`docs/BasilMohamed-version-control.md`).
     *   Learned to stage and commit code sequentially using Git.
 
----
 
 ### Week 2 Progress
 

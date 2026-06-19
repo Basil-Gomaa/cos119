@@ -70,3 +70,10 @@ Testing/
 
 # Visual Studio
 .vs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.tlog
+*.idb
+history.txt
