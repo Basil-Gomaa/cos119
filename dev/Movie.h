@@ -11,6 +11,9 @@ private:
     std::string plot;
     std::string rating;
 
+    // Helper to print wrapped fields in the display box
+    void printWrappedField(const std::string& label, const std::string& text, size_t boxWidth) const;
+
 public:
     Movie(std::string t, std::string y, std::string d, std::string p, std::string r);
 
