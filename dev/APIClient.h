@@ -11,6 +11,9 @@ private:
     // Helper to extract a JSON value from a raw string manually
     std::string extractJSONValue(const std::string& json, const std::string& key) const;
 
+    // Helper to URL encode movie title queries
+    std::string urlEncode(const std::string& value) const;
+
 public:
     APIClient(std::string key);
 
