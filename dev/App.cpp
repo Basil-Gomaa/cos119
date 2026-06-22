@@ -1,10 +1,14 @@
 #include "App.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
-App::App(std::string apiKey) : apiClient(apiKey) {}
+App::App(std::string apiKey) : apiClient(apiKey) {
+    loadHistory(); // Load search history from file on startup
+}
 
 App::~App() {
+    saveHistory(); // Save search history to file before exit
     clearHistory(); // Ensure we delete dynamically allocated movies when App is destroyed
 }
 
@@ -38,7 +42,7 @@ void App::run() {
                 viewHistory();
                 break;
             case 3:
-                clearHistory();
+                clearHistory(true);
                 std::cout << "History cleared.\n";
                 break;
             case 4:
@@ -55,14 +59,23 @@ void App::searchMovie() {
     std::string title;
     std::getline(std::cin, title);
 
+    // Validate and trim whitespace
+    std::string trimmed = title;
+    size_t start = trimmed.find_first_not_of(" \t\r\n");
+    if (start == std::string::npos) {
+        std::cout << "Error: Movie title cannot be empty.\n";
+        return;
+    }
+    size_t end = trimmed.find_last_not_of(" \t\r\n");
+    trimmed = trimmed.substr(start, end - start + 1);
+
     std::cout << "Fetching data...\n";
-    Movie* newMovie = apiClient.fetchMovie(title);
+    Movie* newMovie = apiClient.fetchMovie(trimmed);
 
     if (newMovie != nullptr) {
         newMovie->display();
         searchHistory.push_back(newMovie); // Add pointer to vector history
-    } else {
-        std::cout << "Movie not found or error occurred.\n";
+        saveHistory(); // Save immediately to secure history file
     }
 }
 
@@ -72,16 +85,71 @@ void App::viewHistory() const {
         return;
     }
 
-    std::cout << "\n=== Search History ===\n";
-    for (size_t i = 0; i < searchHistory.size(); ++i) {
-        std::cout << i + 1 << ". " << searchHistory[i]->getTitle() 
-                  << " (" << searchHistory[i]->getYear() << ")\n";
+    while (true) {
+        std::cout << "\n=== Search History ===\n";
+        for (size_t i = 0; i < searchHistory.size(); ++i) {
+            std::cout << i + 1 << ". " << searchHistory[i]->getTitle() 
+                      << " (" << searchHistory[i]->getYear() << ")\n";
+        }
+        std::cout << "\nEnter a number to view full details (or 0 to return): ";
+        int indexChoice = 0;
+        if (!(std::cin >> indexChoice)) {
+            std::cout << "Invalid input. Returning to menu.\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            break;
+        }
+        std::cin.ignore(10000, '\n');
+
+        if (indexChoice == 0) {
+            break;
+        }
+
+        if (indexChoice > 0 && static_cast<size_t>(indexChoice) <= searchHistory.size()) {
+            searchHistory[indexChoice - 1]->display();
+        } else {
+            std::cout << "Invalid choice. Please select a number between 1 and " << searchHistory.size() << ".\n";
+        }
     }
 }
 
-void App::clearHistory() {
+void App::clearHistory(bool clearDisk) {
     for (Movie* m : searchHistory) {
         delete m; // Free memory for each movie
     }
     searchHistory.clear(); // Empty the vector
+
+    if (clearDisk) {
+        // Truncate the file so history is cleared on disk too
+        std::ofstream outFile("history.txt", std::ios::trunc);
+    }
+}
+
+void App::loadHistory() {
+    std::ifstream inFile("history.txt");
+    if (!inFile) return;
+
+    std::string title, year, director, plot, rating;
+    while (std::getline(inFile, title) &&
+           std::getline(inFile, year) &&
+           std::getline(inFile, director) &&
+           std::getline(inFile, plot) &&
+           std::getline(inFile, rating)) {
+        if (!title.empty()) {
+            searchHistory.push_back(new Movie(title, year, director, plot, rating));
+        }
+    }
+}
+
+void App::saveHistory() const {
+    std::ofstream outFile("history.txt", std::ios::trunc);
+    if (!outFile) return;
+
+    for (const Movie* m : searchHistory) {
+        outFile << m->getTitle() << "\n";
+        outFile << m->getYear() << "\n";
+        outFile << m->getDirector() << "\n";
+        outFile << m->getPlot() << "\n";
+        outFile << m->getRating() << "\n";
+    }
 }

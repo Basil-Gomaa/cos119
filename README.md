@@ -25,10 +25,22 @@ During Week 1, the core foundation of the project was established, completing bo
     *   Completed the Version Control research document (`docs/BasilMohamed-version-control.md`).
     *   Learned to stage and commit code sequentially using Git.
 
+
 ### Week 2 Progress
 
 During Week 2, the application's structure and robustness were improved for Milestone 2:
 
 *   **Project Relocation**: Relocated the Visual Studio solution (`.slnx`) and project files (`.vcxproj`, `.vcxproj.filters`, `.vcxproj.user`) inside the `dev/` directory to conform with the course structure requirements.
 *   **Input Validation**: Implemented robust input validation in the menu loop (`App::run()`) to handle invalid non-numeric inputs (like text or symbols) cleanly. The application now displays an error message, resets the stream, discards the bad input, and re-prompts the user instead of entering an infinite loop. 
+
+
+### Week 3 Progress
+
+During Week 3, the application was completed for Milestone 3 (Feature Completion):
+
+*   **Persistent Search History**: Added automated file I/O to serialize search history to `history.txt` on exit and restore it on startup, keeping disk persistence separate from memory cleanup.
+*   **Interactive History Viewer**: Upgraded the search history list into an interactive menu that lets users select past searches by number to view their full details.
+*   **Robust Manual JSON Parsing**: Rewrote the JSON extractor to handle escaped quotes (`\"`) and spaces around colons, and propagated specific OMDb error messages to the user.
+*   **URL Encoding**: Implemented standard URL encoding for titles to correctly query movies with spaces and special characters (like `&`).
+*   **Visual Layout & Word-Wrapping**: Added clean ASCII border boxes and custom text word-wrapping to format details beautifully on standard console dimensions, alongside empty input checks.
 

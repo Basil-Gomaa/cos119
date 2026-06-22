@@ -12,7 +12,11 @@ private:
 
     void searchMovie();
     void viewHistory() const;
-    void clearHistory();
+    void clearHistory(bool clearDisk = false);
+
+    // Persistency helper methods
+    void loadHistory();
+    void saveHistory() const;
 
 public:
     App(std::string apiKey);
