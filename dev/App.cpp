@@ -3,8 +3,87 @@
 #include <string>
 #include <fstream>
 
-App::App(std::string apiKey) : apiClient(apiKey) {
+App::App() : apiClient(resolveAPIKey()) {
     loadHistory(); // Load search history from file on startup
+}
+
+std::string App::resolveAPIKey() {
+    std::string keyFile = "api_key.txt";
+    std::ifstream inFile(keyFile);
+    if (inFile.is_open()) {
+        std::string key;
+        if (std::getline(inFile, key)) {
+            // Trim whitespace
+            size_t start = key.find_first_not_of(" \t\r\n");
+            if (start != std::string::npos) {
+                size_t end = key.find_last_not_of(" \t\r\n");
+                key = key.substr(start, end - start + 1);
+            }
+            if (!key.empty()) {
+                return key;
+            }
+        }
+        inFile.close();
+    }
+
+    // If file doesn't exist or is empty, prompt user
+    std::cout << "No API key found in " << keyFile << ".\n";
+    std::string key;
+    while (true) {
+        std::cout << "Please enter your OMDb API key: ";
+        std::getline(std::cin, key);
+        // Trim whitespace
+        size_t start = key.find_first_not_of(" \t\r\n");
+        if (start != std::string::npos) {
+            size_t end = key.find_last_not_of(" \t\r\n");
+            key = key.substr(start, end - start + 1);
+        } else {
+            key = "";
+        }
+        if (!key.empty()) {
+            break;
+        }
+        std::cout << "Error: API key cannot be empty.\n";
+    }
+
+    // Save to file
+    std::ofstream outFile(keyFile);
+    if (outFile.is_open()) {
+        outFile << key << "\n";
+        outFile.close();
+        std::cout << "API key saved to " << keyFile << ".\n";
+    }
+
+    return key;
+}
+
+bool App::readIntegerInput(int& result) const {
+    std::string line;
+    if (!std::getline(std::cin, line)) {
+        return false;
+    }
+
+    // Trim leading/trailing whitespace
+    size_t start = line.find_first_not_of(" \t\r\n");
+    if (start == std::string::npos) {
+        return false; // Empty line
+    }
+    size_t end = line.find_last_not_of(" \t\r\n");
+    std::string trimmed = line.substr(start, end - start + 1);
+
+    // Check if the trimmed string consists entirely of digits
+    for (char c : trimmed) {
+        if (!std::isdigit(static_cast<unsigned char>(c))) {
+            return false;
+        }
+    }
+
+    try {
+        result = std::stoi(trimmed);
+        return true;
+    } catch (...) {
+        return false;
+    }
 }
 
 App::~App() {
@@ -22,17 +101,14 @@ void App::run() {
         std::cout << "4. Exit\n";
         std::cout << "Enter your choice: ";
         
-        if (!(std::cin >> choice)) {
+        if (!readIntegerInput(choice)) {
             if (std::cin.eof()) {
                 std::cout << "\nDetected end-of-file. Exiting.\n";
                 break;
             }
             std::cout << "Invalid choice. Please enter a valid menu number (1-4).\n";
-            std::cin.clear(); // Clear the error state
-            std::cin.ignore(10000, '\n'); // Clear the rest of the line
             continue; // Re-prompt
         }
-        std::cin.ignore(10000, '\n'); // Clear newline and any trailing garbage from buffer
 
         switch (choice) {
             case 1:
@@ -49,7 +125,7 @@ void App::run() {
                 std::cout << "Exiting program. Goodbye!\n";
                 break;
             default:
-                std::cout << "Invalid choice. Please try again.\n";
+                std::cout << "Invalid choice. Please enter a valid menu number (1-4).\n";
         }
     }
 }
@@ -93,13 +169,13 @@ void App::viewHistory() const {
         }
         std::cout << "\nEnter a number to view full details (or 0 to return): ";
         int indexChoice = 0;
-        if (!(std::cin >> indexChoice)) {
-            std::cout << "Invalid input. Returning to menu.\n";
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            break;
+        if (!readIntegerInput(indexChoice)) {
+            if (std::cin.eof()) {
+                break;
+            }
+            std::cout << "Invalid input. Please enter a valid menu selection.\n";
+            continue;
         }
-        std::cin.ignore(10000, '\n');
 
         if (indexChoice == 0) {
             break;

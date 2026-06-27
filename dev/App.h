@@ -18,8 +18,11 @@ private:
     void loadHistory();
     void saveHistory() const;
 
+    static std::string resolveAPIKey();
+    bool readIntegerInput(int& result) const;
+
 public:
-    App(std::string apiKey);
+    App();
     ~App(); // Destructor to clean up dynamic memory
 
     void run(); // Main application loop
