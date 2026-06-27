@@ -107,6 +107,13 @@ Movie* APIClient::fetchMovie(std::string title) const {
     pclose(pipe);
 #endif
 
+    // Validate raw response is a non-empty JSON object
+    size_t startPos = result.find_first_not_of(" \t\r\n");
+    if (startPos == std::string::npos || result[startPos] != '{') {
+        std::cout << "\nError: Network connection failed or invalid API response received.\n";
+        return nullptr;
+    }
+
     // Basic check if the movie was found or API returned False
     if (result.find("\"Response\":\"False\"") != std::string::npos) {
         std::string errorMsg = extractJSONValue(result, "Error");
