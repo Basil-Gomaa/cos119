@@ -8,26 +8,30 @@ App::App() : apiClient(resolveAPIKey()) {
 }
 
 std::string App::resolveAPIKey() {
-    std::string keyFile = "api_key.txt";
-    std::ifstream inFile(keyFile);
-    if (inFile.is_open()) {
-        std::string key;
-        if (std::getline(inFile, key)) {
-            // Trim whitespace
-            size_t start = key.find_first_not_of(" \t\r\n");
-            if (start != std::string::npos) {
-                size_t end = key.find_last_not_of(" \t\r\n");
-                key = key.substr(start, end - start + 1);
+    std::string paths[] = { "api_key.txt", "../api_key.txt", "../../api_key.txt", "../../../api_key.txt" };
+    
+    for (const std::string& p : paths) {
+        std::ifstream inFile(p);
+        if (inFile.is_open()) {
+            std::string key;
+            if (std::getline(inFile, key)) {
+                // Trim whitespace
+                size_t start = key.find_first_not_of(" \t\r\n");
+                if (start != std::string::npos) {
+                    size_t end = key.find_last_not_of(" \t\r\n");
+                    key = key.substr(start, end - start + 1);
+                }
+                if (!key.empty()) {
+                    return key;
+                }
             }
-            if (!key.empty()) {
-                return key;
-            }
+            inFile.close();
         }
-        inFile.close();
     }
 
     // If file doesn't exist or is empty, prompt user
-    std::cout << "No API key found in " << keyFile << ".\n";
+    std::string targetFile = "api_key.txt";
+    std::cout << "No API key found in local or parent directories.\n";
     std::string key;
     while (true) {
         std::cout << "Please enter your OMDb API key: ";
@@ -47,11 +51,11 @@ std::string App::resolveAPIKey() {
     }
 
     // Save to file
-    std::ofstream outFile(keyFile);
+    std::ofstream outFile(targetFile);
     if (outFile.is_open()) {
         outFile << key << "\n";
         outFile.close();
-        std::cout << "API key saved to " << keyFile << ".\n";
+        std::cout << "API key saved to " << targetFile << ".\n";
     }
 
     return key;
