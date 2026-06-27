@@ -44,3 +44,15 @@ During Week 3, the application was completed for Milestone 3 (Feature Completion
 *   **URL Encoding**: Implemented standard URL encoding for titles to correctly query movies with spaces and special characters (like `&`).
 *   **Visual Layout & Word-Wrapping**: Added clean ASCII border boxes and custom text word-wrapping to format details beautifully on standard console dimensions, alongside empty input checks.
 
+
+### Week 4 Progress
+
+During Week 4, the application was finalized for Milestone 4 (Final Submission):
+
+*   **Dynamic API Key Caching**: Decoupled the API key from source code by loading it from `api_key.txt` or prompting the user on first-run and persisting it.
+*   **API Key Protection**: Added `api_key.txt` to `.gitignore` to ensure credentials are never committed.
+*   **Deliberate Input Handling**: Removed the unsafe `std::cin.ignore()` blanket fixes, replacing them with a custom line-by-line integer parser (`App::readIntegerInput`) that prevents stream corruption and handles EOF gracefully.
+*   **Network Failure Resilience**: Fixed the bug where network failures led to empty `"N/A"` movie entries in search history by validating raw response payloads before parsing.
+*   **Final Release Documentation & Packaging**: Created `docs/Milestone4.md` and generated compilation and features validation screenshots in `docs/validation/`.
+
+
